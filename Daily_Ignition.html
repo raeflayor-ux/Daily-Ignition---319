@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Daily Ignition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=DM+Serif+Display&display=swap');
+  
+  :root {
+    --navy: #1B2A4A;
+    --navy-deep: #111D35;
+    --navy-surface: #1E3054;
+    --steel: #3D5A80;
+    --steel-light: #4A6D99;
+    --accent: #E07A5F;
+    --accent-glow: #E07A5F22;
+    --warm: #F4A261;
+    --green: #4CAF50;
+    --green-dim: #2E7D3233;
+    --text: #E8ECF1;
+    --text-dim: #8B9DB8;
+    --text-muted: #5A6F88;
+    --surface: #172238;
+    --card: #1C2D48;
+    --border: #2A3F5F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--navy-deep);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    padding: 20px 20px 16px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22px; font-weight: 400; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text); margin-bottom: 4px;
+  }
+  .header .sub { font-size: 11px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+
+  .content { padding: 12px; }
+
+  /* ─── TODAY DIRECTIVE ─── */
+  .today-card {
+    background: linear-gradient(135deg, var(--navy-surface) 0%, var(--card) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+  .today-date {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-dim); margin-bottom: 8px;
+  }
+  .today-day-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 28px; color: var(--text); margin-bottom: 4px; line-height: 1.1;
+  }
+  .today-day-num span { color: var(--accent); }
+  .today-directive {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .directive-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--warm); font-weight: 700; margin-bottom: 6px;
+  }
+  .directive-run {
+    font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3;
+  }
+  .directive-run .dist { color: var(--accent); }
+  .directive-run .long-tag {
+    display: inline-block; background: var(--accent); color: white;
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+    margin-left: 8px; vertical-align: middle; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .directive-rest {
+    font-size: 18px; color: var(--text-dim); line-height: 1.3;
+  }
+  .directive-rest strong { color: var(--text); }
+  .week-context {
+    font-size: 12px; color: var(--text-muted); margin-top: 8px;
+  }
+  .week-context strong { color: var(--text-dim); }
+  .race-countdown {
+    display: inline-block; background: var(--accent-glow); border: 1px solid var(--accent);
+    border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--accent);
+    font-weight: 700; margin-top: 8px; letter-spacing: 0.5px;
+  }
+  .race-done {
+    font-size: 13px; color: var(--green); font-weight: 500;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  .section.open { box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+
+  .section-header {
+    display: flex; align-items: center; padding: 14px 16px;
+    cursor: pointer; user-select: none; gap: 12px;
+  }
+  .section-header:active { opacity: 0.8; }
+
+  .section-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section-icon.am { background: var(--steel); }
+  .section-icon.pm { background: var(--navy-surface); border: 1px solid var(--steel); }
+  .section-icon.fuel { background: var(--accent); }
+  .section-icon.night { background: var(--steel); }
+
+  .section-title { flex: 1; }
+  .section-title h2 {
+    font-size: 15px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--text); line-height: 1.2;
+  }
+  .section-title .tagline { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  .chevron {
+    width: 20px; height: 20px; flex-shrink: 0;
+    transition: transform 0.3s ease; color: var(--text-muted);
+  }
+  .section.open .chevron { transform: rotate(180deg); }
+
+  .section-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .section.open .section-body { max-height: 2000px; }
+  .section-inner { padding: 0 16px 16px; }
+
+  /* ─── EXERCISES ─── */
+  .exercise {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+  }
+  .exercise:last-child { border-bottom: none; }
+  .exercise .num {
+    width: 26px; height: 26px; background: var(--navy); border: 1px solid var(--steel);
+    border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--steel-light); flex-shrink: 0; margin-top: 1px;
+  }
+  .exercise .info { flex: 1; }
+  .exercise .name { font-weight: 700; font-size: 14px; color: var(--text); line-height: 1.3; }
+  .exercise .detail { font-size: 12px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+
+  /* ─── GAPS ─── */
+  .gap-row {
+    display: flex; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: baseline;
+  }
+  .gap-row:last-child { border-bottom: none; }
+  .gap-label { font-weight: 700; font-size: 13px; color: var(--text); width: 42%; flex-shrink: 0; }
+  .gap-target { font-size: 12px; color: var(--warm); width: 30%; flex-shrink: 0; }
+  .gap-days { font-size: 12px; color: var(--text-dim); text-align: right; flex: 1; }
+
+  /* ─── MACROS ─── */
+  .macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .macro-box {
+    background: var(--surface); border-radius: 8px; padding: 10px 12px; text-align: center;
+  }
+  .macro-box .val {
+    font-size: 20px; font-weight: 700; color: var(--text);
+    font-family: 'DM Serif Display', Georgia, serif;
+  }
+  .macro-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .macro-box.protein { border: 1px solid var(--accent); }
+  .macro-box.protein .val { color: var(--accent); }
+
+  .fuel-notes { font-size: 12px; color: var(--text-dim); line-height: 1.6; padding: 8px 0; }
+  .fuel-notes strong { color: var(--text); font-weight: 500; }
+
+  .resolves {
+    background: var(--green-dim); border: 1px solid #2E7D3244;
+    border-radius: 8px; padding: 10px 14px; margin-top: 12px;
+  }
+  .resolves .rlabel { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--green); font-weight: 700; margin-bottom: 4px; }
+  .resolves .rlist { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  .reminders { padding: 12px; }
+  .reminder-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; color: var(--text-dim); }
+  .reminder-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm); flex-shrink: 0; }
+
+  /* ─── FULL SCHEDULE ─── */
+  .schedule-grid {
+    display: grid; grid-template-columns: auto repeat(7, 1fr);
+    gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden;
+    font-size: 11px; margin-top: 10px;
+  }
+  .schedule-grid .sh {
+    background: var(--navy); color: var(--text-dim); padding: 6px 4px;
+    text-align: center; font-weight: 700; font-size: 10px; text-transform: uppercase;
+  }
+  .schedule-grid .sc {
+    background: var(--surface); color: var(--text-dim); padding: 6px 4px;
+    text-align: center; font-size: 11px;
+  }
+  .schedule-grid .sc.run { color: var(--steel-light); font-weight: 500; }
+  .schedule-grid .sc.long { background: var(--accent-glow); color: var(--accent); font-weight: 700; }
+  .schedule-grid .sc.race { background: var(--accent); color: white; font-weight: 700; }
+  .schedule-grid .sc.rest { color: var(--text-muted); }
+  .schedule-grid .sc.wk {
+    background: var(--navy-surface); color: var(--text); font-weight: 700;
+    text-align: center; font-size: 10px; line-height: 1.3;
+  }
+  .schedule-grid .sc.today-cell {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    background: var(--accent-glow);
+  }
+
+  .footer {
+    text-align: center; padding: 20px; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .footer .quote {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 14px; color: var(--steel-light); font-style: italic; line-height: 1.5;
+  }
+  .footer .project { font-size: 10px; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Daily Ignition</h1>
+  <div class="sub">Movement Encyclopedia &bull; 319 Days</div>
+</div>
+
+<div class="content">
+
+  <!-- TODAY'S DIRECTIVE — populated by JS -->
+  <div class="today-card" id="todayCard"></div>
+
+  <!-- FULL RUN SCHEDULE -->
+  <div class="section" id="sec-schedule">
+    <div class="section-header" onclick="toggle('sec-schedule')">
+      <div class="section-icon am">&#x1F45F;</div>
+      <div class="section-title">
+        <h2>Full Run Schedule</h2>
+        <div class="tagline">8 weeks &mdash; Half marathon Apr 19</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div id="scheduleGrid"></div>
+    </div></div>
+  </div>
+
+  <!-- AM: PRE-RUN ACTIVATION -->
+  <div class="section" id="sec-am">
+    <div class="section-header" onclick="toggle('sec-am')">
+      <div class="section-icon am">&#x1F305;</div>
+      <div class="section-title">
+        <h2>Pre-Run Activation</h2>
+        <div class="tagline">&le;5 min &mdash; Every run &mdash; Non-negotiable</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="exercise"><div class="num">1</div><div class="info"><div class="name">Hip Bridge</div><div class="detail">2&times;12 &mdash; glute activation before impact</div></div></div>
+      <div class="exercise"><div class="num">2</div><div class="info"><div class="name">Clamshell</div><div class="detail">2&times;15/side &mdash; lateral hip stability</div></div></div>
+      <div class="exercise"><div class="num">3</div><div class="info"><div class="name">Wall Ankle Mobilization</div><div class="detail">10/side &mdash; dorsiflexion check</div></div></div>
+      <div class="exercise"><div class="num">4</div><div class="info"><div class="name">Lateral Band Walk</div><div class="detail">1&times;10 each way &mdash; hip abductors</div></div></div>
+      <div class="exercise"><div class="num">5</div><div class="info"><div class="name">Lacrosse Ball Plantar Roll</div><div class="detail">30 sec/foot &mdash; fascia release + diagnostic</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- PM: DECAD GAPS -->
+  <div class="section" id="sec-pm">
+    <div class="section-header" onclick="toggle('sec-pm')">
+      <div class="section-icon pm">&#x1F319;</div>
+      <div class="section-title">
+        <h2>After They Sleep</h2>
+        <div class="tagline">Check gaps &mdash; Pick workout &mdash; Go</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div style="font-size:12px;color:var(--warm);margin-bottom:10px;">When in doubt: <strong style="color:var(--text);">Day A</strong> covers 10 of 11 patterns.</div>
+      <div class="gap-row"><div class="gap-label">Pull &ge; 2&times; Push</div><div class="gap-target">&ge;4 sessions</div><div class="gap-days">A B C D E H J</div></div>
+      <div class="gap-row"><div class="gap-label">Hinge</div><div class="gap-target">&ge;3 sessions</div><div class="gap-days">A B D E G</div></div>
+      <div class="gap-row"><div class="gap-label">Carry</div><div class="gap-target">&ge;2 sessions</div><div class="gap-days">B G H</div></div>
+      <div class="gap-row"><div class="gap-label">Eccentric</div><div class="gap-target">&ge;2 sessions</div><div class="gap-days">B G I</div></div>
+      <div class="gap-row"><div class="gap-label">Plyo / Power</div><div class="gap-target">2&ndash;3 sessions</div><div class="gap-days">A D F H</div></div>
+      <div class="gap-row"><div class="gap-label">Single-Leg</div><div class="gap-target">3&ndash;4 sessions</div><div class="gap-days">A C D F G I</div></div>
+      <div class="gap-row"><div class="gap-label">T-Spine</div><div class="gap-target">Daily (10/10)</div><div class="gap-days">Nightly quintet</div></div>
+    </div></div>
+  </div>
+
+  <!-- FUEL -->
+  <div class="section" id="sec-fuel">
+    <div class="section-header" onclick="toggle('sec-fuel')">
+      <div class="section-icon fuel">&#x1F525;</div>
+      <div class="section-title">
+        <h2>Fuel</h2>
+        <div class="tagline">Phase 1: Race Fuel &mdash; through Apr 19</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="macro-grid">
+        <div class="macro-box"><div class="val">2,900</div><div class="label">Calories</div></div>
+        <div class="macro-box protein"><div class="val">200g</div><div class="label">Protein &mdash; Floor</div></div>
+        <div class="macro-box"><div class="val">300g</div><div class="label">Carbs</div></div>
+        <div class="macro-box"><div class="val">100g</div><div class="label">Fat</div></div>
+      </div>
+      <div class="fuel-notes">
+        <strong>5 meals</strong>, every 3&ndash;4 hours. Cluster carbs around training.<br>
+        <strong>~380 cal deficit</strong> below TDEE.<br>
+        <strong>Night-before:</strong> overnight oats + staged shake.<br>
+        <strong>Race-day target:</strong> 210&ndash;212 lbs.
+      </div>
+    </div></div>
+  </div>
+
+  <!-- NIGHTLY QUINTET -->
+  <div class="section open" id="sec-night">
+    <div class="section-header" onclick="toggle('sec-night')">
+      <div class="section-icon night">&#x1F30C;</div>
+      <div class="section-title">
+        <h2>Nightly Corrective Quintet</h2>
+        <div class="tagline">10&ndash;12 min &mdash; Every night &mdash; Non-negotiable</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div style="font-size:11px;color:var(--text-muted);font-style:italic;margin-bottom:10px;">Floor first, standing last. Same order every night.</div>
+      <div class="exercise"><div class="num">1</div><div class="info"><div class="name">Foam Roller Thoracic Extension</div><div class="detail">2 positions (mid + upper back), 10 breaths each</div></div></div>
+      <div class="exercise"><div class="num">2</div><div class="info"><div class="name">Open-Book Rotation</div><div class="detail">8 reps/side &mdash; t-spine rotation while mobilized</div></div></div>
+      <div class="exercise"><div class="num">3</div><div class="info"><div class="name">Hip Bridge</div><div class="detail">2&times;12 &mdash; undo the desk, feed the hinge</div></div></div>
+      <div class="exercise"><div class="num">4</div><div class="info"><div class="name">Eccentric Heel Drops</div><div class="detail">10/leg &mdash; 5s top, 3s drop, 5s bottom</div></div></div>
+      <div class="exercise"><div class="num">5</div><div class="info"><div class="name">Eccentric Step-Downs</div><div class="detail">10/leg &mdash; slow descent, control the knee</div></div></div>
+
+      <div class="resolves">
+        <div class="rlabel">Resolves 4 of 6 imbalances passively</div>
+        <div class="rlist">Thoracic Mobility &bull; Hinge &bull; Eccentric Tendon &bull; Running Load</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- REMINDERS -->
+  <div class="reminders">
+    <div class="reminder-row"><div class="reminder-dot"></div>Apple Watch: every session</div>
+    <div class="reminder-row"><div class="reminder-dot"></div>Weigh-in: AM (wake + bathroom) + PM (before bed)</div>
+    <div class="reminder-row"><div class="reminder-dot"></div>Heel drops: every night. Non-negotiable.</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="quote">&ldquo;Eliminate the gap. Eliminate the excuse.&rdquo;</div>
+  <div class="project">319 Days &bull; Feb 16 &ndash; Dec 31, 2026</div>
+</div>
+
+<script>
+// ─── RUN SCHEDULE DATA ───
+// Each week: [startDate, {dayOfWeek: {miles, long?, shakeout?, race?}}]
+const schedule = [
+  { start: '2026-02-23', label: 'Wk 1', sub: 'Feb 24', total: '7.5 mi',
+    runs: { 1:{mi:1.5}, 3:{mi:1.5}, 5:{mi:2}, 0:{mi:2.5,long:true} } },
+  { start: '2026-03-02', label: 'Wk 2', sub: 'Mar 2', total: '9 mi',
+    runs: { 1:{mi:2}, 3:{mi:2}, 5:{mi:2}, 6:{mi:3,long:true} } },
+  { start: '2026-03-09', label: 'Wk 3', sub: 'Mar 9', total: '10.5 mi',
+    runs: { 1:{mi:2}, 2:{mi:2}, 4:{mi:2.5}, 6:{mi:4,long:true} } },
+  { start: '2026-03-16', label: 'Wk 4', sub: 'Mar 16', total: '14 mi',
+    runs: { 1:{mi:2}, 2:{mi:2}, 4:{mi:3}, 6:{mi:5,long:true}, 0:{mi:2} } },
+  { start: '2026-03-23', label: 'Wk 5', sub: 'Mar 23', total: '17 mi',
+    runs: { 1:{mi:3}, 2:{mi:2}, 4:{mi:3}, 6:{mi:7,long:true}, 0:{mi:2} } },
+  { start: '2026-03-30', label: 'Wk 6', sub: 'Mar 30', total: '19.5 mi',
+    runs: { 1:{mi:3}, 2:{mi:3}, 4:{mi:3}, 6:{mi:8.5,long:true}, 0:{mi:2} } },
+  { start: '2026-04-06', label: 'Wk 7', sub: 'Apr 6', total: '18-19 mi',
+    runs: { 1:{mi:3}, 3:{mi:3}, 5:{mi:2}, 0:{mi:10.5,long:true} } },
+  { start: '2026-04-13', label: 'Wk 8', sub: 'Apr 13', total: 'Taper + Race',
+    runs: { 1:{mi:3}, 3:{mi:2}, 5:{mi:2,shakeout:true}, 0:{mi:13.1,race:true} } },
+];
+
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const projectStart = new Date(2026, 1, 16); // Feb 16
+const raceDay = new Date(2026, 3, 19); // Apr 19
+
+function dateKey(d) { return d.toISOString().split('T')[0]; }
+function sameDay(a, b) { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+function getDayNumber(d) {
+  const diff = Math.floor((d - projectStart) / 86400000);
+  return diff + 1; // Day 1 = Feb 16
+}
+
+function getTodayRun(today) {
+  const dow = today.getDay(); // 0=Sun
+  for (const week of schedule) {
+    const ws = new Date(week.start + 'T00:00:00');
+    const we = new Date(ws); we.setDate(we.getDate() + 6);
+    if (today >= ws && today <= we) {
+      const run = week.runs[dow];
+      if (run) return { ...run, week: week.label, total: week.total };
+      return { rest: true, week: week.label, total: week.total };
+    }
+  }
+  // Before or after schedule
+  const firstWeekStart = new Date(schedule[0].start + 'T00:00:00');
+  if (today < firstWeekStart) return { preSchedule: true };
+  return { postSchedule: true };
+}
+
+function daysUntilRace(today) {
+  return Math.ceil((raceDay - today) / 86400000);
+}
+
+function renderToday() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const dayNum = getDayNumber(today);
+  const dow = dayNames[today.getDay()];
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dateStr = `${dow}, ${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+  const run = getTodayRun(today);
+  const dtr = daysUntilRace(today);
+
+  let directiveHTML = '';
+  let raceHTML = '';
+
+  if (dtr > 0) {
+    raceHTML = `<div class="race-countdown">${dtr} days to race</div>`;
+  } else if (dtr === 0) {
+    raceHTML = `<div class="race-countdown">RACE DAY</div>`;
+  }
+
+  if (run.preSchedule) {
+    directiveHTML = `<div class="directive-rest">Run schedule starts Feb 24. <strong>PM session only today.</strong></div>`;
+  } else if (run.postSchedule) {
+    directiveHTML = `<div class="race-done">Race complete. Run schedule ended. PM sessions continue.</div>`;
+    raceHTML = '';
+  } else if (run.rest) {
+    directiveHTML = `<div class="directive-rest"><strong>Rest morning.</strong> No run today. PM session only.</div>
+      <div class="week-context">${run.week} &mdash; <strong>${run.total}</strong> target</div>`;
+  } else if (run.race) {
+    directiveHTML = `<div class="directive-run"><span class="dist">13.1 miles</span> <span class="long-tag">Race Day</span></div>
+      <div class="week-context">Jersey City Half Marathon. You built this.</div>`;
+    raceHTML = `<div class="race-countdown">TODAY IS THE DAY</div>`;
+  } else if (run.shakeout) {
+    directiveHTML = `<div class="directive-run"><span class="dist">${run.mi} miles</span> <span class="long-tag">Shakeout</span></div>
+      <div class="week-context">Loosen up. Don't load. Race Sunday.</div>`;
+  } else if (run.long) {
+    directiveHTML = `<div class="directive-run"><span class="dist">${run.mi} miles</span> <span class="long-tag">Long Run</span></div>
+      <div class="week-context">${run.week} &mdash; <strong>${run.total}</strong> target. Conversational pace.</div>`;
+  } else {
+    directiveHTML = `<div class="directive-run"><span class="dist">${run.mi} miles</span> &mdash; pre-run activation &mdash; front door &mdash; go</div>
+      <div class="week-context">${run.week} &mdash; <strong>${run.total}</strong> target</div>`;
+  }
+
+  // If it's a run day, auto-open the pre-run section
+  if (!run.rest && !run.preSchedule && !run.postSchedule) {
+    document.getElementById('sec-am').classList.add('open');
+  }
+
+  document.getElementById('todayCard').innerHTML = `
+    <div class="today-date">${dateStr}</div>
+    <div class="today-day-num">Day <span>${dayNum}</span> / 319</div>
+    <div class="today-directive">
+      <div class="directive-label">${!run.rest && !run.preSchedule && !run.postSchedule ? 'AM Directive' : 'Today'}</div>
+      ${directiveHTML}
+      ${raceHTML}
+    </div>`;
+}
+
+function renderSchedule() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = '<div class="schedule-grid">';
+  html += '<div class="sh">Wk</div>';
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d => { html += `<div class="sh">${d}</div>`; });
+
+  schedule.forEach(week => {
+    const ws = new Date(week.start + 'T00:00:00');
+    html += `<div class="sc wk">${week.label}<br><span style="font-size:9px;color:var(--text-muted)">${week.sub}</span></div>`;
+    // Mon(1) through Sun(0→7)
+    for (let d = 1; d <= 7; d++) {
+      const dow = d % 7; // 1,2,3,4,5,6,0
+      const cellDate = new Date(ws);
+      cellDate.setDate(cellDate.getDate() + (d - 1));
+      const isToday = sameDay(cellDate, today);
+      const run = week.runs[dow];
+      let cls = 'sc';
+      let content = '&mdash;';
+      if (run) {
+        if (run.race) { cls += ' race'; content = '13.1'; }
+        else if (run.long) { cls += ' long'; content = run.mi + ''; }
+        else if (run.shakeout) { cls += ' run'; content = run.mi + ' shk'; }
+        else { cls += ' run'; content = run.mi + ''; }
+      } else { cls += ' rest'; }
+      if (isToday) cls += ' today-cell';
+      html += `<div class="${cls}">${content}</div>`;
+    }
+  });
+  html += '</div>';
+  document.getElementById('scheduleGrid').innerHTML = html;
+}
+
+function toggle(id) { document.getElementById(id).classList.toggle('open'); }
+
+renderToday();
+renderSchedule();
+</script>
+
+</body>
+</html>
