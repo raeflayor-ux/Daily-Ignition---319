@@ -235,6 +235,59 @@
     font-size: 14px; color: var(--steel-light); font-style: italic; line-height: 1.5;
   }
   .footer .project { font-size: 10px; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  /* ═══ THE LIBRARY ═══ */
+  .library-divider { margin:24px 12px 16px; border:none; border-top:1px solid var(--steel); position:relative; }
+  .library-divider::after { content:''; position:absolute; top:-1px; left:0; width:60px; height:2px; background:var(--steel); }
+  .library-header { text-align:center; margin:16px 0 8px; }
+  .library-title { font-size:1.2rem; font-weight:700; color:#8BA7C8; letter-spacing:0.15em; }
+  .library-sub { font-size:0.7rem; color:var(--text-muted); margin-top:2px; letter-spacing:0.05em; }
+
+  .lib-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; margin:0 12px 8px; overflow:hidden; }
+  .lib-header { display:flex; align-items:center; padding:12px; cursor:pointer; gap:10px; }
+  .lib-header:hover { background:#1C2636; }
+  .lib-icon { width:34px; height:34px; border-radius:8px; background:#1E2D42; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .lib-info { flex:1; }
+  .lib-name { font-weight:700; color:#C8D8E8; font-size:0.9rem; }
+  .lib-desc { font-size:0.68rem; color:var(--text-muted); margin-top:2px; }
+  .lib-header .chevron { color:#556; }
+  .lib-card.open .lib-header .chevron { transform:rotate(180deg); }
+  .lib-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .lib-card.open .lib-body { max-height:none; }
+  .lib-inner { padding:0 12px 14px; }
+
+  .lib-h2 { font-size:0.82rem; font-weight:700; color:#8BA7C8; margin:1rem 0 0.4rem; padding-bottom:3px; border-bottom:1px solid var(--border); }
+  .lib-h3 { font-size:0.78rem; font-weight:700; color:#7A9BBD; margin:0.8rem 0 0.3rem; }
+  .lib-label { font-size:0.68rem; font-weight:700; color:#6A8DAD; margin:0.5rem 0 0.15rem; text-transform:uppercase; letter-spacing:0.04em; }
+  .lib-p { font-size:0.75rem; color:#99A; line-height:1.5; margin:0.25rem 0; }
+  .lib-p strong { color:#C8D8E8; }
+  .lib-quote { font-size:0.75rem; color:#7A9BBD; font-style:italic; margin:0.4rem 0; padding-left:0.75rem; border-left:2px solid var(--steel); line-height:1.45; }
+  .lib-em { font-size:0.75rem; color:#8BA7C8; font-style:italic; margin:0.4rem 0; }
+
+  .lib-table { width:100%; border-collapse:collapse; font-size:0.68rem; margin:0.4rem 0; }
+  .lib-table th { background:#1E2D42; color:#8BA7C8; padding:5px 7px; text-align:left; font-weight:600; border:1px solid var(--border); }
+  .lib-table td { padding:4px 7px; border:1px solid var(--border); color:#99A; }
+  .lib-table tr:nth-child(even) td { background:#161E2A; }
+  .lib-table tr:nth-child(odd) td { background:#1A2435; }
+
+  .meal-card { background:#1A2435; border-radius:6px; padding:8px 10px; margin:4px 0; }
+  .meal-name { font-size:0.75rem; font-weight:700; color:#7A9BBD; margin-bottom:2px; }
+  .meal-detail { font-size:0.7rem; color:#99A; line-height:1.4; }
+  .meal-macros { font-size:0.65rem; color:#6A8DAD; margin-top:3px; font-weight:600; }
+  .meal-note { font-size:0.65rem; color:#667; font-style:italic; margin-top:2px; }
+
+  .phase-card { background:#1A2435; border-radius:8px; padding:10px; margin:6px 0; border-left:3px solid var(--steel); }
+  .phase-name { font-size:0.78rem; font-weight:700; color:#8BA7C8; margin-bottom:4px; }
+  .phase-detail { font-size:0.7rem; color:#99A; line-height:1.45; }
+
+  .sub-card { background:#1A2435; border-radius:6px; padding:8px 10px; margin:4px 0; }
+  .sub-title { font-size:0.72rem; font-weight:700; color:#7A9BBD; margin-bottom:2px; }
+  .sub-text { font-size:0.7rem; color:#99A; line-height:1.4; }
+
+  .prep-step { display:flex; gap:8px; margin:4px 0; padding:6px 8px; background:#1A2435; border-radius:6px; }
+  .prep-num { width:22px; height:22px; border-radius:50%; background:var(--steel); color:var(--card-bg); font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .prep-info { flex:1; }
+  .prep-task { font-size:0.72rem; font-weight:700; color:#7A9BBD; }
+  .prep-detail { font-size:0.68rem; color:#99A; line-height:1.35; }
 </style>
 </head>
 <body>
@@ -363,6 +416,333 @@
     <div class="reminder-row"><div class="reminder-dot"></div>Heel drops: every night. Non-negotiable.</div>
   </div>
 
+</div>
+
+<!-- ═══ THE LIBRARY ═══ -->
+<hr class="library-divider">
+<div class="library-header">
+  <div class="library-title">THE LIBRARY</div>
+  <div class="library-sub">Nutrition Architecture &bull; Reference</div>
+</div>
+
+<!-- 1. THE THREE PHASES -->
+<div class="lib-card" id="lib-0">
+  <div class="lib-header" onclick="toggleLib('lib-0')">
+    <div class="lib-icon">📐</div>
+    <div class="lib-info">
+      <div class="lib-name">The Three Phases</div>
+      <div class="lib-desc">Race Fuel → The Cut → Hold &amp; Perform. Macros, rules, and transition triggers.</div>
+    </div>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="lib-body"><div class="lib-inner">
+    <div class="lib-quote">The architecture is bulletproof. But if the fuel is wrong, the engine doesn't care how good the blueprint is.</div>
+
+    <div class="lib-h2">The Math</div>
+    <div class="lib-p"><strong>Starting point:</strong> 44 years old, 5'10", 218 lbs. Training two-a-days (AM running, PM S&amp;C) 5–6 days per week. Target: 185–190 lbs at below 11% body fat.</div>
+    <div class="lib-p"><strong>BMR</strong> (Mifflin-St Jeor): ~1,875 cal/day</div>
+    <div class="lib-p"><strong>TDEE:</strong> 1,875 × 1.75 (very active) = ~3,280 cal/day at current weight. Recalculate at each phase transition.</div>
+    <div class="lib-p"><strong>Protein Floor:</strong> 200g/day across all three phases. 1g per pound of target lean body mass. Non-negotiable. Protein protects muscle during the deficit, supports recovery between two-a-days, and is the most satiating macronutrient.</div>
+    <div class="lib-em">Protein stays at 200g in every phase. It's the fixed point around which everything else moves.</div>
+
+    <table class="lib-table">
+      <tr><th>Phase</th><th>Dates</th><th>Cal</th><th>P</th><th>C</th><th>F</th><th>Deficit</th></tr>
+      <tr><td><strong>1 — Race Fuel</strong></td><td>Feb 24 – Apr 19</td><td>2,900</td><td>200g</td><td>300g</td><td>100g</td><td>~380 cal</td></tr>
+      <tr><td><strong>2 — The Cut</strong></td><td>Apr 20 – ~Sep</td><td>2,500</td><td>200g</td><td>225g</td><td>89g</td><td>~650 cal</td></tr>
+      <tr><td><strong>3 — Hold &amp; Perform</strong></td><td>Sep – Dec 31+</td><td>2,800*</td><td>190g</td><td>275g</td><td>95g</td><td>Maint.</td></tr>
+    </table>
+    <div class="lib-p" style="font-size:0.65rem; color:#667;">*Phase 3 calories estimated for 185–190 lb body at same activity. Recalculate TDEE at phase transition.</div>
+
+    <!-- PHASE 1 -->
+    <div class="phase-card">
+      <div class="phase-name">Phase 1 — Race Fuel (Feb 24 – Apr 19)</div>
+      <div class="phase-detail"><strong>Goal:</strong> Fuel the half marathon build and two-a-day training while losing weight at a sustainable rate. Performance is the priority. You are earning the right to cut.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>2,900 cal/day</strong> (~380 below TDEE). Enough to lose 0.75–1 lb/week (6–8 lbs over 8 weeks) while keeping energy high. Expected race-day weight: 210–212 lbs.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>Protein: 200g</strong> (800 cal, 28%) — Muscle preservation and recovery between two-a-days.</div>
+      <div class="phase-detail"><strong>Carbs: 300g</strong> (1,200 cal, 41%) — Jet fuel. Glycogen for AM runs and PM S&amp;C. Carbs are not the enemy during a half marathon build. They are the primary performance driver.</div>
+      <div class="phase-detail"><strong>Fat: 100g</strong> (900 cal, 31%) — Hormone support, satiety, joint lubrication. Minimum healthy fat for a male athlete is ~0.4g/lb.</div>
+      <div class="lib-label" style="margin-top:8px;">Phase 1 Rules</div>
+      <div class="phase-detail">Carbs cluster around training windows. Pre-run, post-run, pre-S&amp;C, post-S&amp;C. Dinner carbs are earned by training, not by the clock.</div>
+      <div class="phase-detail">Protein spread across all 5 feeding windows (35–45g per window). No window drops below 30g.</div>
+      <div class="phase-detail">Long run days (Sat/Sun): Increase carbs by 50g. Pull from fat, not protein. This is a fueling day, not a diet day.</div>
+      <div class="phase-detail">Hydration: Half your body weight in ounces minimum (109 oz/day). More on run days. Electrolytes on runs over 60 minutes.</div>
+      <div class="phase-detail"><strong>Processed sugar: gone. Alcohol: gone.</strong> These two decisions alone eliminate most of the caloric surplus.</div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-card">
+      <div class="phase-name">Phase 2 — The Cut (Apr 20 – ~Aug/Sep)</div>
+      <div class="phase-detail"><strong>Goal:</strong> Drive from 210–212 to 185–190. This is where the weight comes off. Running volume drops to maintenance (3 runs/week, no race build), S&amp;C becomes the primary engine. The deficit opens.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>2,500 cal/day</strong> (~650 below estimated TDEE at ~210 lbs). This yields 1.25–1.5 lbs/week. 20–25 lbs in 18–22 weeks puts you at target by August–September.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>Protein: 200g</strong> (800 cal, 32%) — Stays locked. Higher percentage now because total calories dropped. Protein is the firewall against muscle loss in a deficit.</div>
+      <div class="phase-detail"><strong>Carbs: 225g</strong> (900 cal, 36%) — Reduced from Phase 1 but still sufficient for S&amp;C. Running volume lower, so glycogen demand drops. Carbs still cluster around training.</div>
+      <div class="phase-detail"><strong>Fat: 89g</strong> (800 cal, 32%) — Slightly reduced. Stays above the 0.4g/lb floor at ~200 lb midpoint.</div>
+      <div class="lib-label" style="margin-top:8px;">Phase 2 Rules</div>
+      <div class="phase-detail">Recalculate TDEE every 10 lbs lost. As weight drops, TDEE drops, and the deficit narrows if calories stay the same. Adjust by 100–150 cal per 10-lb milestone.</div>
+      <div class="phase-detail"><strong>Carb cycling:</strong> Training days get 250g carbs. Rest days drop to 175g. Difference comes from removing pre/post workout carb windows. Protein and fat stay constant.</div>
+      <div class="phase-detail"><strong>One refeed day per DECAD:</strong> Bring calories to maintenance (full TDEE) with the extra coming from carbs. Resets leptin, refills glycogen, keeps metabolism from adapting down. Not a cheat day — a strategic tool.</div>
+      <div class="phase-detail">If weight loss stalls for 2+ weeks at the same calorie level, add one S&amp;C session before reducing calories further. Movement before restriction.</div>
+      <div class="phase-detail">If energy tanks, mood drops, or session quality degrades for 3+ consecutive days, you're cutting too hard. Add 200 calories from carbs and reassess.</div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-card">
+      <div class="phase-name">Phase 3 — Hold &amp; Perform (Sep – Dec 31+)</div>
+      <div class="phase-detail"><strong>Goal:</strong> Land at 185–190, stabilize, and ride the final 100+ days of the encyclopedia at fighting weight. No deficit. No surplus. Maintenance.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>~2,800 cal/day</strong> (estimated maintenance at 185–190 lbs, same activity level). Recalculate TDEE with actual weight at phase entry.</div>
+      <div class="phase-detail" style="margin-top:4px;"><strong>Protein: 190g</strong> (760 cal, 27%) — Slight reduction from 200g because you're no longer in a deficit and muscle preservation pressure drops. Still well above 1g/lb lean mass.</div>
+      <div class="phase-detail"><strong>Carbs: 275g</strong> (1,100 cal, 39%) — Restored to fuel full-intensity training without the drag of a deficit. Performance ceiling lifts.</div>
+      <div class="phase-detail"><strong>Fat: 95g</strong> (855 cal, 31%) — Restored to comfortable levels.</div>
+      <div class="lib-label" style="margin-top:8px;">Phase 3 Rules</div>
+      <div class="phase-detail">Weigh daily, average weekly. If weekly average drifts more than 3 lbs above target for 2 consecutive weeks, reduce by 150 calories. If it drops more than 3 lbs below, add 150. The thermostat, not the gas pedal.</div>
+      <div class="phase-detail"><strong>This is your life. Not a phase.</strong> The eating patterns you build here are the ones you keep. December 31 is when the documentation ends. The nutrition doesn't.</div>
+      <div class="lib-em">The man at the end of this project doesn't go back to how he ate before. He already forgot how.</div>
+    </div>
+
+    <!-- PHASE TRANSITIONS -->
+    <div class="lib-h2">Phase Transition Triggers</div>
+    <div class="lib-p"><strong>Don't switch phases by the calendar. Switch by the conditions.</strong></div>
+    <table class="lib-table">
+      <tr><th>Transition</th><th>Conditions</th><th>Protocol</th></tr>
+      <tr><td><strong>Phase 1 → 2</strong></td><td>Half marathon complete (Apr 19). Body fueled for performance for 8 weeks.</td><td>Switch the Monday after race day. Give yourself race weekend to eat freely and celebrate.</td></tr>
+      <tr><td><strong>Phase 2 → 3</strong></td><td>Weekly avg weight hits 188–190 for 2 consecutive weeks. Body fat visibly sub-11%.</td><td>Don't chase 185 at the expense of performance. If you're at 190 and sessions are strong, you're there.</td></tr>
+      <tr><td><strong>Emergency Brake</strong></td><td>Weight loss exceeds 2 lbs/week for 3+ weeks, OR energy tanks for 5+ consecutive days.</td><td>Add 200 cal from carbs immediately. Reassess after one DECAD.</td></tr>
+    </table>
+    <div class="lib-em">One system. Execute until it's boring. Let the bodyweight log tell the story.</div>
+
+  </div></div>
+</div>
+
+<!-- 2. DAILY FEEDING SCHEDULE -->
+<div class="lib-card" id="lib-1">
+  <div class="lib-header" onclick="toggleLib('lib-1')">
+    <div class="lib-icon">🕐</div>
+    <div class="lib-info">
+      <div class="lib-name">Daily Feeding Schedule</div>
+      <div class="lib-desc">Five windows. Built around two-a-day training. Protein in every window.</div>
+    </div>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="lib-body"><div class="lib-inner">
+    <div class="lib-p">Five feeding windows across the day, spaced every 3–4 hours. Built around the two-a-day training rhythm. Protein in every window. Carbs cluster around training.</div>
+
+    <div class="lib-h2">Two-a-Day Schedule (AM Run + PM S&amp;C)</div>
+    <table class="lib-table">
+      <tr><th>Window</th><th>Time</th><th>Focus</th><th>~Cal</th></tr>
+      <tr><td><strong>1 — Breakfast</strong></td><td>6:00–6:30 AM</td><td>P + C + F</td><td>~650</td></tr>
+      <tr><td><strong>2 — Mid-Morning</strong></td><td>9:30–10:00 AM</td><td>P + C</td><td>~350</td></tr>
+      <tr><td><strong>3 — Lunch</strong></td><td>12:30–1:00 PM</td><td>P + C + F</td><td>~700</td></tr>
+      <tr><td><strong>4 — Afternoon</strong></td><td>3:30–4:00 PM</td><td>P + C</td><td>~350</td></tr>
+      <tr><td><strong>5 — Dinner</strong></td><td>7:30–8:30 PM</td><td>P + F</td><td>~650</td></tr>
+    </table>
+    <div class="lib-p"><strong>Window 1</strong> — Post-run. Largest carb window. Glycogen refill after AM miles.</div>
+    <div class="lib-p"><strong>Window 2</strong> — Bridge meal. Keeps blood sugar stable. Prevents afternoon crash.</div>
+    <div class="lib-p"><strong>Window 3</strong> — Largest meal by volume. Pre-loads for PM session (3–4 hours out).</div>
+    <div class="lib-p"><strong>Window 4</strong> — Pre-S&amp;C fuel. Light, fast-digesting. 60–90 min before PM session.</div>
+    <div class="lib-p"><strong>Window 5</strong> — Post-S&amp;C. Lower carb unless long/intense session. Recovery focus.</div>
+
+    <div class="lib-h2">Adjustments</div>
+    <div class="sub-card">
+      <div class="sub-title">Fasted AM Run (5:00–5:30 AM)</div>
+      <div class="sub-text">Have 20–30g fast-digesting carbs before the run (banana, handful of dates, or a slice of toast with honey). This is not a meal. It's ignition fuel. Full breakfast shifts to post-run. Everything else stays the same.</div>
+    </div>
+    <div class="sub-card">
+      <div class="sub-title">PM-Only Training Days</div>
+      <div class="sub-text">If no AM run (rest day from running, S&amp;C only in PM): Breakfast carbs drop by ~50g. Mid-morning snack stays. Afternoon snack becomes the pre-workout window. Same total protein. Calories auto-correct because the run-day carb window is removed.</div>
+    </div>
+    <div class="sub-card">
+      <div class="sub-title">Full Rest Days</div>
+      <div class="sub-text">Rare but they'll happen. Drop to 3 meals, skip the snacks, reduce carbs to ~175g (Phase 2) or ~225g (Phase 1). Protein stays at 200g. Fat fills the remaining calories. This is not a punishment day. It's a recovery day. Eat to rebuild.</div>
+    </div>
+  </div></div>
+</div>
+
+<!-- 3. MEAL TEMPLATES -->
+<div class="lib-card" id="lib-2">
+  <div class="lib-header" onclick="toggleLib('lib-2')">
+    <div class="lib-icon">🍳</div>
+    <div class="lib-info">
+      <div class="lib-name">Meal Templates — The Rotation</div>
+      <div class="lib-desc">Breakfast, snacks, lunch, dinner. Mix and match. Compliance over variety.</div>
+    </div>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="lib-body"><div class="lib-inner">
+    <div class="lib-quote">Seven to ten meals in rotation. The goal is not variety — it's compliance. Boring when it's working is the highest compliment a nutrition plan can receive.</div>
+
+    <div class="lib-h2">Breakfast (~650 cal | 40–45g P | 60–75g C | 20–25g F)</div>
+    <div class="meal-card">
+      <div class="meal-name">Eggs + Oats Power Bowl</div>
+      <div class="meal-detail">4 whole eggs scrambled, 1 cup oats, 1 banana, 1 tbsp peanut butter</div>
+      <div class="meal-macros">45P / 72C / 25F</div>
+      <div class="meal-note">The default. Prep oats night before (overnight oats) or microwave.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Protein Pancakes</div>
+      <div class="meal-detail">1 scoop whey, 1 egg, 1 banana, ½ cup oats blended, cooked as pancakes. Side: 3 turkey sausage</div>
+      <div class="meal-macros">42P / 65C / 18F</div>
+      <div class="meal-note">Batch-cook and freeze. Reheat in 90 sec.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Steak &amp; Eggs Plate</div>
+      <div class="meal-detail">4 oz sirloin, 3 eggs, 1 cup roasted sweet potato, handful spinach</div>
+      <div class="meal-macros">48P / 40C / 22F</div>
+      <div class="meal-note">Higher protein, lower carb. Good for PM-only days.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Greek Yogurt Stack</div>
+      <div class="meal-detail">1.5 cups plain Greek yogurt, ½ cup granola, 1 cup berries, 1 tbsp honey, 1 scoop collagen</div>
+      <div class="meal-macros">50P / 68C / 12F</div>
+      <div class="meal-note">No cooking. 2 min assembly.</div>
+    </div>
+
+    <div class="lib-h2">Mid-Morning Snack (~350 cal | 30–35g P | 30–40g C | 10–15g F)</div>
+    <div class="meal-card">
+      <div class="meal-name">Protein Shake + Fruit</div>
+      <div class="meal-detail">1.5 scoops whey in water, 1 apple or banana</div>
+      <div class="meal-macros">38P / 35C / 3F</div>
+      <div class="meal-note">Fastest option. Shake in car or at desk.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Turkey Roll-Ups</div>
+      <div class="meal-detail">4 oz deli turkey, 1 oz cheese, whole wheat tortilla, mustard</div>
+      <div class="meal-macros">32P / 28C / 14F</div>
+      <div class="meal-note">Prep night before. Grab and go.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Cottage Cheese + Fruit</div>
+      <div class="meal-detail">1 cup cottage cheese, ½ cup pineapple, 10 almonds</div>
+      <div class="meal-macros">30P / 25C / 12F</div>
+      <div class="meal-note">High casein = slow digestion. Holds you to lunch.</div>
+    </div>
+
+    <div class="lib-h2">Lunch (~700 cal | 45–50g P | 70–80g C | 20–25g F)</div>
+    <div class="meal-card">
+      <div class="meal-name">Chicken + Rice + Veg</div>
+      <div class="meal-detail">8 oz chicken breast, 1.5 cups white rice, 1 cup roasted broccoli, 1 tbsp olive oil</div>
+      <div class="meal-macros">50P / 78C / 18F</div>
+      <div class="meal-note">The meal prep king. Cook 4 lbs chicken Sunday.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Ground Turkey Burrito Bowl</div>
+      <div class="meal-detail">8 oz 93% lean ground turkey, 1 cup rice, black beans, salsa, ¼ avocado</div>
+      <div class="meal-macros">48P / 72C / 22F</div>
+      <div class="meal-note">Batch the turkey. Assemble in 3 min.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Salmon + Sweet Potato</div>
+      <div class="meal-detail">6 oz salmon, 1 large sweet potato, mixed greens, lemon vinaigrette</div>
+      <div class="meal-macros">42P / 60C / 24F</div>
+      <div class="meal-note">Omega-3 boost. Bake salmon and potato together.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Steak Stir-Fry</div>
+      <div class="meal-detail">6 oz sirloin strips, 1.5 cups rice, mixed stir-fry veg, soy sauce, sesame oil</div>
+      <div class="meal-macros">45P / 75C / 20F</div>
+      <div class="meal-note">High volume. Filling. Prep veg in advance.</div>
+    </div>
+
+    <div class="lib-h2">Afternoon Snack (~350 cal | 30–35g P | 35–40g C | 8–12g F)</div>
+    <div class="meal-card">
+      <div class="meal-name">Rice Cakes + PB + Whey</div>
+      <div class="meal-detail">2 rice cakes, 1 tbsp peanut butter, 1 scoop whey in water</div>
+      <div class="meal-macros">35P / 38C / 10F</div>
+      <div class="meal-note">Pre-workout. Fast digesting. 60 min before S&amp;C.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Banana + Protein Bar</div>
+      <div class="meal-detail">1 banana, 1 protein bar (30g+ protein)</div>
+      <div class="meal-macros">32P / 42C / 8F</div>
+      <div class="meal-note">Zero prep. Grab from the pantry.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Trail Mix + Jerky</div>
+      <div class="meal-detail">1 oz beef jerky, ¼ cup trail mix, 1 small apple</div>
+      <div class="meal-macros">25P / 35C / 12F</div>
+      <div class="meal-note">Slower digestion. Better for 90+ min pre-workout window.</div>
+    </div>
+
+    <div class="lib-h2">Dinner (~650 cal | 45–50g P | 30–50g C | 25–30g F)</div>
+    <div class="meal-card">
+      <div class="meal-name">Grilled Chicken Thighs + Veg</div>
+      <div class="meal-detail">8 oz chicken thighs (bone-in), roasted asparagus, side salad with olive oil</div>
+      <div class="meal-macros">48P / 15C / 28F</div>
+      <div class="meal-note">Low carb post-S&amp;C. Higher fat for satiety before bed.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Lean Beef + Roasted Veg</div>
+      <div class="meal-detail">8 oz 90% lean ground beef patties, roasted zucchini, bell peppers, side salad</div>
+      <div class="meal-macros">50P / 35C / 26F</div>
+      <div class="meal-note">Add ¾ cup rice on heavy training days.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Shrimp + Cauliflower Rice</div>
+      <div class="meal-detail">10 oz shrimp sautéed in olive oil and garlic, 2 cups cauliflower rice, side of edamame</div>
+      <div class="meal-macros">52P / 20C / 18F</div>
+      <div class="meal-note">Lightest dinner option. Good after late PM sessions.</div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-name">Pork Tenderloin + Greens</div>
+      <div class="meal-detail">8 oz pork tenderloin, roasted Brussels sprouts, small baked potato</div>
+      <div class="meal-macros">46P / 40C / 12F</div>
+      <div class="meal-note">Lean cut. Potato adds carbs for heavy S&amp;C days.</div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- 4. SUNDAY PREP SYSTEM -->
+<div class="lib-card" id="lib-3">
+  <div class="lib-header" onclick="toggleLib('lib-3')">
+    <div class="lib-icon">📦</div>
+    <div class="lib-info">
+      <div class="lib-name">Sunday Prep System</div>
+      <div class="lib-desc">Checklist, grocery list, and substitution logic. 90 minutes. Zero willpower Mon–Sat.</div>
+    </div>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="lib-body"><div class="lib-inner">
+    <div class="lib-p">One prep session per week. Sunday afternoon or evening. 90–120 minutes. This is the nutrition equivalent of "before they wake, after they sleep" — you front-load the effort so that Mon–Sat requires zero willpower.</div>
+    <div class="lib-em">If the containers aren't loaded Sunday night, Monday's nutrition is already compromised. The prep is the practice.</div>
+
+    <div class="lib-h2">The Sunday Prep Checklist</div>
+    <div class="prep-step"><div class="prep-num">1</div><div class="prep-info"><div class="prep-task">Protein Cook</div><div class="prep-detail">4 lbs chicken breast (baked 400°F, 25 min) + 2 lbs ground turkey (browned, seasoned). Covers lunch and dinner protein Mon–Fri.</div></div></div>
+    <div class="prep-step"><div class="prep-num">2</div><div class="prep-info"><div class="prep-task">Carb Cook</div><div class="prep-detail">Large pot white rice (4–5 cups dry) + 3–4 sweet potatoes (baked alongside chicken). Rice and sweet potatoes in containers. Microwave-ready.</div></div></div>
+    <div class="prep-step"><div class="prep-num">3</div><div class="prep-info"><div class="prep-task">Veg Prep</div><div class="prep-detail">Wash and chop broccoli, peppers, zucchini, asparagus. Roast 2 sheet pans of mixed veg. Half raw (for stir-fry later in week), half roasted (grab and go).</div></div></div>
+    <div class="prep-step"><div class="prep-num">4</div><div class="prep-info"><div class="prep-task">Snack Assembly</div><div class="prep-detail">Portion trail mix into bags. Slice turkey roll-ups. Pre-make overnight oats ×3. Snacks are the first thing to fall apart without prep.</div></div></div>
+    <div class="prep-step"><div class="prep-num">5</div><div class="prep-info"><div class="prep-task">Breakfast Prep</div><div class="prep-detail">Batch protein pancakes (freeze in stacks of 2). Hard-boil 12 eggs. Pancakes reheat in 90 sec. Eggs are instant protein.</div></div></div>
+    <div class="prep-step"><div class="prep-num">6</div><div class="prep-info"><div class="prep-task">Container Load</div><div class="prep-detail">Assemble 5 lunch containers (protein + carb + veg). Stack in fridge. Grab one on the way out. Decision eliminated.</div></div></div>
+
+    <div class="lib-h2">Weekly Grocery List (Base)</div>
+    <div class="lib-p">Covers one person for one week of the meal rotation. Items marked * are pantry staples (buy once, restock monthly).</div>
+    <table class="lib-table">
+      <tr><th>Protein</th><th>Carbs</th><th>Produce</th><th>Pantry / Other</th></tr>
+      <tr>
+        <td>4 lbs chicken breast<br>2 lbs ground turkey (93%)<br>2 lbs sirloin or flank steak<br>1 lb shrimp<br>1 lb salmon<br>2 doz eggs<br>Deli turkey (1 lb)<br>Greek yogurt (lg tub)<br>Cottage cheese (lg tub)<br>Whey protein*</td>
+        <td>5 cups white rice (dry)<br>3 lbs sweet potatoes<br>Old-fashioned oats (lg canister*)<br>Whole wheat tortillas<br>Rice cakes<br>Granola*<br>Bananas (6–8)<br>Apples (4–5)</td>
+        <td>Broccoli (2 crowns)<br>Asparagus (1 bunch)<br>Zucchini (3)<br>Bell peppers (4)<br>Brussels sprouts (1 lb)<br>Spinach (lg bag)<br>Mixed greens<br>Berries (2 cups)<br>Pineapple (1 cup)<br>Lemons (2)</td>
+        <td>Olive oil*<br>Peanut butter*<br>Almonds*<br>Trail mix*<br>Honey*<br>Soy sauce*<br>Sesame oil*<br>Salsa<br>Black beans (canned)<br>Avocados (2)<br>Cheese (1 block)<br>Protein bars (box)</td>
+      </tr>
+    </table>
+
+    <div class="lib-h2">Substitution Logic</div>
+    <div class="lib-em">The pattern stays. The tool changes. If the macro profile matches, the swap works.</div>
+    <div class="sub-card"><div class="sub-title">Chicken breast →</div><div class="sub-text">Turkey breast, pork tenderloin, white fish (tilapia, cod), extra-lean ground beef. Protein-for-protein. Keep fat content similar.</div></div>
+    <div class="sub-card"><div class="sub-title">White rice →</div><div class="sub-text">Sweet potato, quinoa, couscous, whole wheat pasta, Ezekiel bread. Carb-for-carb. Adjust portions — rice is denser than potato by volume.</div></div>
+    <div class="sub-card"><div class="sub-title">Broccoli / asparagus →</div><div class="sub-text">Any green vegetable: zucchini, green beans, Brussels sprouts, spinach, kale. Volume swap. Calories are negligible.</div></div>
+    <div class="sub-card"><div class="sub-title">Eggs →</div><div class="sub-text">Egg whites (double volume) + 1 whole egg. Or liquid egg substitute. Cutting fat: swap to whites. Keeping fat: keep whole.</div></div>
+    <div class="sub-card"><div class="sub-title">Greek yogurt →</div><div class="sub-text">Cottage cheese, Skyr, casein protein pudding. High-protein dairy swap. Keep sugar low.</div></div>
+    <div class="sub-card"><div class="sub-title">Peanut butter →</div><div class="sub-text">Almond butter, cashew butter, tahini. Fat-for-fat. Calorie density is nearly identical.</div></div>
+    <div class="sub-card"><div class="sub-title">Whey protein →</div><div class="sub-text">Plant protein (pea/rice blend), casein, egg white protein. Protein-for-protein. Plant blends may need slightly higher dose for leucine.</div></div>
+    <div class="sub-card"><div class="sub-title">Salmon →</div><div class="sub-text">Mackerel, sardines, trout, or chicken + fish oil supplement. Omega-3 source. If swapping to non-fish, supplement.</div></div>
+    <div class="sub-card"><div class="sub-title">No time to cook →</div><div class="sub-text">Rotisserie chicken + microwave rice + bagged salad. The emergency meal. Available at every grocery store. 5 min to plate.</div></div>
+    <div class="sub-card"><div class="sub-title">Traveling →</div><div class="sub-text">Chipotle bowl (double chicken, rice, fajita veg, no sour cream) or any protein + carb + veg plate. Restaurant protocol: protein visible, carb identifiable, veg present. Skip sauces.</div></div>
+
+  </div></div>
+</div>
+
+<div style="text-align:center; padding:16px 0 8px; font-size:0.6rem; color:#445;">
+  Daily Ignition &bull; Nutrition Architecture &bull; Movement Encyclopedia &bull; 319 Days
 </div>
 
 <div class="footer">
@@ -515,6 +895,7 @@ function renderSchedule() {
 }
 
 function toggle(id) { document.getElementById(id).classList.toggle('open'); }
+function toggleLib(id) { document.getElementById(id).classList.toggle('open'); }
 
 renderToday();
 renderSchedule();
